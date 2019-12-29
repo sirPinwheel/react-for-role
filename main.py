@@ -30,13 +30,14 @@ class BotClient(discord.Client):
         await self.check_reactions()
 
         # Testing async tasks
-        @tasks.loop(seconds=10.0)
-        async def do_if_role_present(): pass
-        await do_if_role_present.start()
+        #@tasks.loop(seconds=10.0)
+        #async def do_if_role_present(): pass
+        #await do_if_role_present.start()
         # End
 
     async def grant_role(self, payload) -> None:
         if payload[0] == REACTION_MESSAGE_ID: role_name = self.match_role(payload[2])
+        else: return
 
         if role_name is not None and role_name in [x.name for x in self.guilds[0].roles]:
             role_obj = discord.utils.get(self.guilds[0].roles, name=role_name)
@@ -50,6 +51,7 @@ class BotClient(discord.Client):
 
     async def remove_role(self, payload) -> None:
         if payload[0] == REACTION_MESSAGE_ID: role_name = self.match_role(payload[2])
+        else: return
 
         if role_name is not None and role_name in [x.name for x in self.guilds[0].roles]:
             role_obj = discord.utils.get(self.guilds[0].roles, name=role_name)
